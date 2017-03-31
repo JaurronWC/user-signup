@@ -15,11 +15,87 @@
 # limitations under the License.
 #
 import webapp2
+import re
 
-class MainHandler(webapp2.RequestHandler):
+# html boilerplate for the top of every page
+page_header = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+    <style type="text/css">
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        <a href="/">Signup</a>
+    </h1>
+"""
+
+# html boilerplate for the bottom of every page
+page_footer = """
+</body>
+</html>
+"""
+
+
+class Index(webapp2.RequestHandler):
+    """Acts as the root of our site (/)
+    """
     def get(self):
-        self.response.write('Hello world!')
+        #header = "<h2>Signup</h2>"
+
+        add_form = '''
+        <form method="post">
+            <table>
+                <tr><label>
+                <td>Name</td>
+                <td><input type="text" value="" /></td>
+                </label></tr>
+                <tr><label>
+                <td>Password</td>
+                <td><input type="password" value="" /></td>
+                </label></tr>
+                <tr><label>
+                <td>Verify Password</td>
+                <td><input type="password" value="" /></td>
+                </label></tr>
+                <tr><label>
+                <td>Email (Optional)</td>
+                <td><input type="text" value="" /></td>
+                </label></tr>
+            </table>
+            <input type="submit" value="Submit" />
+        </form>
+        '''
+
+        main_form = add_form
+        content = page_header + main_form + page_footer
+        self.response.write(content)
+
+class AddInfo(webapp2.RequestHandler):
+    """"Class for taking entered info and determining if it's valid or not
+    """"
+    def post(self):
+
+
+class Welcome(webapp2.RequestHandler):
+    """User is redirected to this page upon a successful sign up and greeted by name
+    """
+
+    def get(self):
+        header = "<h2>Welcome [UserName]"
+
+
+
+        main_form = header
+        content = page_header + header + page_footer
+        self.response.write(content)
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', Index),
+    ('/welcome', Welcome)
 ], debug=True)
