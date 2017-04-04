@@ -15,6 +15,7 @@
 # limitations under the License.
 #
 import webapp2
+import cgi
 import re
 
 # html boilerplate for the top of every page
@@ -46,48 +47,70 @@ class Index(webapp2.RequestHandler):
     """Acts as the root of our site (/)
     """
     def get(self):
-        #header = "<h2>Signup</h2>"
 
+        #form for adding information into the page
         add_form = '''
-        <form method="post">
+        <form action="/welcome" method="post">
             <table>
                 <tr><label>
                 <td>Name</td>
-                <td><input type="text" value="" /></td>
+                <td><input type="text" name="user-name" /></td>
                 </label></tr>
                 <tr><label>
                 <td>Password</td>
-                <td><input type="password" value="" /></td>
+                <td><input type="password" name="user-password" /></td>
                 </label></tr>
                 <tr><label>
                 <td>Verify Password</td>
-                <td><input type="password" value="" /></td>
+                <td><input type="password" name="user-verify" /></td>
                 </label></tr>
                 <tr><label>
                 <td>Email (Optional)</td>
-                <td><input type="text" value="" /></td>
+                <td><input type="text" name="user-email" /></td>
                 </label></tr>
             </table>
             <input type="submit" value="Submit" />
         </form>
         '''
+        #if there's an error display it next to the location,otherwise display nothing
+        error = self.request.get("error")
+        if error:
+            error_esc = cgi.escape(error, quote=True)
+            error_element = "<p class='error'>" + error_esc + "</p>"
+        else:
+            error_element = ""
 
-        main_form = add_form
+        #construct and display the page
+        main_form = add_form + error_element
         content = page_header + main_form + page_footer
         self.response.write(content)
-
-class AddInfo(webapp2.RequestHandler):
-    """"Class for taking entered info and determining if it's valid or not
-    """"
-    def post(self):
-
 
 class Welcome(webapp2.RequestHandler):
     """User is redirected to this page upon a successful sign up and greeted by name
     """
 
-    def get(self):
-        header = "<h2>Welcome [UserName]"
+    def post(self):
+
+        #look inside the request for each piece of information
+        user_name = self.request.get("user-name")
+        user_password = self.request.get("user-password")
+        user_verify = self.request.get("user-verify")
+        user_email = self.request.get("user-email")
+
+        # return an error if the user didn't enter a name, password, or verified password
+        if user_name.strip() == "":
+            errorr = "Please enter your name."
+            self.redirect("/?error=" +cgi.escape(error, quote=True))
+
+        if user_password.strip() == "":
+            errorr = "Please enter a password."
+            self.redirect("/?error=" +cgi.escape(error, quote=True))
+
+        if user_verify.strip() == "":
+            errorr = "Please verify your password."
+            self.redirect("/?error=" +cgi.escape(error, quote=True))
+
+        header = "<h2>Welcome [UserName] </h2>"
 
 
 
