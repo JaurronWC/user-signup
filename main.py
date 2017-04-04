@@ -72,6 +72,7 @@ class Index(webapp2.RequestHandler):
             <input type="submit" value="Submit" />
         </form>
         '''
+
         #if there's an error display it next to the location,otherwise display nothing
         error = self.request.get("error")
         if error:
@@ -98,24 +99,29 @@ class Welcome(webapp2.RequestHandler):
         user_email = self.request.get("user-email")
 
         # return an error if the user didn't enter a name, password, or verified password
-        if user_name.strip() == "":
+        if (not user_name) or (user_name.strip() == ""):
             errorr = "Please enter your name."
             self.redirect("/?error=" +cgi.escape(error, quote=True))
 
-        if user_password.strip() == "":
+        if (not user_password) or  (user_password.strip() == ""):
             errorr = "Please enter a password."
             self.redirect("/?error=" +cgi.escape(error, quote=True))
 
-        if user_verify.strip() == "":
+        if (not user_verify) or  (user_verify.strip() == ""):
             errorr = "Please verify your password."
             self.redirect("/?error=" +cgi.escape(error, quote=True))
 
-        header = "<h2>Welcome [UserName] </h2>"
+        #escape HTML in user name and Email
+        user_name_escaped = cgi.escape(user_name, quote=True)
+        email_escaped = cgi.escape(user_email, quote=True)
 
+        if user_email != "":
+            sent_email = "A verification email has been sent to " + user_email
+        else:
+            sent_email = ""
 
-
-        main_form = header
-        content = page_header + header + page_footer
+        welcome_user = "<strong>Welcome " + user_name_escaped + "! </strong>" + "<br> <br>" + sent_email
+        content = page_header + welcome_user + page_footer
         self.response.write(content)
 
 app = webapp2.WSGIApplication([
