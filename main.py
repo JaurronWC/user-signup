@@ -100,16 +100,17 @@ class Welcome(webapp2.RequestHandler):
 
         # return an error if the user didn't enter a name, password, or verified password
         if (not user_name) or (user_name.strip() == ""):
-            errorr = "Please enter your name."
+            error = "Please enter your name."
             self.redirect("/?error=" +cgi.escape(error, quote=True))
 
         if (not user_password) or  (user_password.strip() == ""):
-            errorr = "Please enter a password."
+            error = "Please enter a password."
             self.redirect("/?error=" +cgi.escape(error, quote=True))
 
-        if (not user_verify) or  (user_verify.strip() == ""):
-            errorr = "Please verify your password."
-            self.redirect("/?error=" +cgi.escape(error, quote=True))
+        if user_password != "":
+            if (not user_verify) or  (user_verify.strip() == ""):
+                error = "Please verify your password."
+                self.redirect("/?error=" +cgi.escape(error, quote=True))
 
         #escape HTML in user name and Email
         user_name_escaped = cgi.escape(user_name, quote=True)
