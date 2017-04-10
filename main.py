@@ -143,35 +143,35 @@ class Welcome(webapp2.RequestHandler):
         # return an error if the user didn't enter a name, password, or verified password
         if (not user_name_escaped) or (user_name_escaped.strip() == ""):
             u_error = "Please enter a username."
-            self.redirect("/?error=")
+            self.redirect("/")
         elif not valid_username(user_name_escaped):
             u_error = "Please a valid username."
-            self.redirect("/?error=")
+            self.redirect("/")
 
 
         if (not user_password_escaped) or  (user_password_escaped.strip() == ""):
             p_error = "Please enter a password."
-            self.redirect("/?error"
+            self.redirect("/")
         elif not valid_password(user_password_escaped):
             p_error = "Please enter a valid password"
-            self.redirect("/?error")
+            self.redirect("/")
         else:
             p_error = ""
 
         if user_password != "":
             if (not user_verify_escaped) or  (user_verify_escaped.strip() == ""):
                 v_error = "Please verify your password."
-                self.redirect("/?error=")
+                self.redirect("/")
             elif user_verify_escaped != user_password_escaped:
                 v_error = "Your passwords do not match."
-                self.redirect("/?error=")
+                self.redirect("/")
             else:
                 v_error = ""
 
         if user_email != "":
             if not valid_email:
                 e_error = "Please enter a valid email."
-                self.redirect("/?error=")
+                self.redirect("/")
             else:
                 sent_email = "A verification email has been sent to " + email_escaped
         else:
