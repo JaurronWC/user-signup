@@ -69,13 +69,13 @@ class Index(webapp2.RequestHandler):
 		add_form = """
 		<form action="/welcome" method="post">
 			<label>Username: </label>
-				<input type="text" name="username" value="{uname}" /> <font style="color:red:">{uerror}</font>
+				<input type="text" name="username" value="{uname}" required/> <font style="color:red">{uerror}</font>
 			<br>
 			<label>Password</label>
-				<input type="password" name="password" />
+				<input type="password" name="password" required/>
 			<br>
 			<label>Verify Password</label>
-				<input type="password" name="vpassword" /> <font style="color:red">{perror}</font>
+				<input type="password" name="vpassword" required/> <font style="color:red">{perror}</font>
 			<br>
 			<label>Email (optional)</label>
 				<input type="email" name="email" value="{uemail}" /><font style="color:red">{eerror}</font>
